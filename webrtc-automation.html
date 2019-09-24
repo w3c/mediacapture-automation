@@ -45,33 +45,98 @@
   </section>
   <section>
     <h2>Media Capture Permissions</h2>
-    <p>The [[Permissions]] specification defines permissions to camera and microphone as well as display.
-    It defines in particular the <a data-cite="!Permissions/#set-permission-command">extension command</a> to set each permission of the browsing contexts of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
-    </p>
-    <p>In the context of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>, the following rules apply for camera, microphone and display permissions:
-      <ul>
-        <li>The <a data-cite="!WebDriver/#dfn-endpoint-node">WebDriver endpoint node</a> MUST be able to set the
-        <a data-cite="!Permissions/#permission-state">permission state</a> of the
-        <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a> of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
-        This state applies to all the children of the <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a>.
-        </li>
-        <li>When the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
-        the <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> will treat the state as if
-        <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> when executing 
-        <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a>
-        and <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a href="https://w3c.github.io/mediacapture-screen-share/#dfn-getdisplaymedia">getDisplayMedia</a>.
-        This allows a good default setup and enables to use getDisplayMedia in automation contexts  since <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> is not a valid value for the display permission.
-        </li>
-      </ul>
-    </p>
+    <section>
+      <h3>First approach: use [[Permissions]] automation</h3>
+      <p>The [[Permissions]] specification defines permissions to camera and microphone as well as display.
+      It defines in particular the <a data-cite="!Permissions/#set-permission-command">extension command</a> to set each permission of the browsing contexts of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
+      </p>
+      <p>In the context of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>, the following rules apply for camera, microphone and display permissions:
+        <ul>
+          <li>The <a data-cite="!WebDriver/#dfn-endpoint-node">WebDriver endpoint node</a> MUST be able to set the
+          <a data-cite="!Permissions/#permission-state">permission state</a> of the
+          <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a> of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
+          This state applies to all the children of the <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a>.
+          </li>
+          <li>When the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
+          the <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> will treat the state as if
+          <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> when executing 
+          <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a>
+          and <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a href="https://w3c.github.io/mediacapture-screen-share/#dfn-getdisplaymedia">getDisplayMedia</a>.
+          This allows a good default setup and enables to use getDisplayMedia in automation contexts  since <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> is not a valid value for the display permission.
+          </li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h3>Second approach: control prompt results</h3>
+      <p>A <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> handles two prompt result values:
+        <ol>
+          <li>
+            <p>A <dfn id="getUserMedia-prompt-result">getUserMedia prompt result</dfn> which is either "granted" or "denied".
+            This value is used when <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a>
+            is executing the <a data-cite="!MediaCaptureMain/#request-permission-to-use">request permission to use</a> step.
+            If the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
+            the <a data-cite="!MediaCaptureMain/#request-permission-to-use">request permission to use</a> step
+            will return the value of the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a>.
+            The default value of <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> is "granted".</p>
+          </li>
+          <li>
+            <p>A <dfn id="getDisplayMedia-prompt-result">getDisplayMedia prompt result</dfn> which is either "granted" or "denied".
+
+            This value is used when <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="ScreenCapture/#dfn-getdisplaymedia">getDisplayMedia</a>
+            is executing the <a data-cite="ScreenCapture/#prompt-the-user-to-choose">prompt the user to choose</a> step.
+            If the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
+            the <a data-cite="ScreenCapture/#prompt-the-user-to-choose">prompt the user to choose</a> step
+            will return:
+            <ul>
+              <li>"denied" if the value of the <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "denied".</li>
+              <li>a set of mock provided media if the value of the <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "granted".</li>
+            </ul>
+            The default value of <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "granted".</p>
+            </p>
+          </li>
+        </ol>
+      </p>
+      <section>
+        <h4 id="set-capture-prompt-result">Set capture prompt result</h3>
+        <table>
+         <tbody>
+          <tr>
+           <th>HTTP Method
+           <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+          <tr>
+           <td>POST
+           <td>/session/{session id}/capture-devices/prompt-result
+        </table>
+        <p>The <dfn id="set-capture-prompt-result">set capture prompt result</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a>
+        sets the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> and <a href="getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> values.</p>
+        <p>TODO: Define the <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a>.</p>
+      </section>
+      <section>
+        <h4 id="get-capture-prompt-result">Get capture prompt result</h3>
+        <table>
+         <tbody>
+          <tr>
+           <th>HTTP Method
+           <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+          <tr>
+           <td>GET
+           <td>/session/{session id}/capture-devices/prompt-result
+        </table>
+        <p>The <dfn id="get-capture-prompt-result">get capture prompt result</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a>
+        sets the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> and <a href="getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> values.</p>
+        <p>TODO: Define the <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a>.</p>
+      </section>
+    </section>
   </section>
   <section>
     <h2>Mock Capture Devices</h2>
     <p>A mock capture device simulates a real capture device or source of data.
     This specification defines mock camera and microphone devices.</p>
-    <p>TODO: Define that a WebDriver session has always a set of mock capture devices, which is used from mediacapture-main when "Probing the User Agent for available media devices" in enumerateDevices and "For each possible source for that media type" for getUserMedia.</p>
+    <p>TODO: Define that a WebDriver session always has a set of mock capture devices, which is used from mediacapture-main when "Probing the User Agent for available media devices" in enumerateDevices and "For each possible source for that media type" for getUserMedia.</p>
     <p>TODO: Define that there is a default WebDriver session which represents the available set of devices by default.</p>
     <p>TODO: Define that there is one default mock microphone device per WebDriver session.</p>
+    <p>TODO: Should we define that there is a default mock camera device per WebDriver session.</p>
     <p>TODO: Define how changes to the mock capture devices set triggers actions, in particular devicechange events.</p>
 
     <section>
@@ -100,6 +165,7 @@
     <section>
       <h3 id="mock-camera">Mock Camera</h3>
       <p>Mock cameras are video <a href="https://w3c.github.io/mediacapture-main/#dfn-source">sources</a>.
+      A mock camera provides video frames to <a data-cite="!MediaCaptureMain/#mediastreamtrack"><code>MediaStreamTrack</code></a> of <a data-cite="!MediaCaptureMain/#dom-mediastreamtrack-kind"><code>kind</code></a> "video".
       <pre class="idl"
 >dictionary MockCameraConfiguration : MockCaptureDeviceConfiguration {
   double defaultFrameRate = 30;
@@ -113,15 +179,17 @@
               <dd>The <a data-cite="!MediaCaptureMain/#def-constraint-frameRate">frame rate</a> to use by default when creating a video source
               if no frame rate constraint is provided by <a data-cite="!MediaCaptureMain/#dom-mediadevices-getusermedia">getUserMedia</a>.</dd>
               <dt><dfn><code>facingMode</code></dfn> of type <span class="idlMemberType">DOMString</span></dt>
-              <dd>The <a data-cite="!MediaCaptureMain/#dom-videofacingmodeenum">facingMode</a> value of the mock camera. A mock camera is supporting a single value.</dd>
+              <dd>The <a data-cite="!MediaCaptureMain/#dom-videofacingmodeenum">facingMode</a> value of the mock camera. A mock camera supports a single value.</dd>
             </dl>
         </section>
       </p>
       <p>A mock camera device has an associated configuration of type <code>MockCameraConfiguration</code>.</p>
+      <p>TODO: Decide which additional parameters to specify and whether to specify more capabilities of the mock camera.</p>
     </section>
     <section>
       <h3 id="mock-microphone">Mock Microphone</h2>
       <p>Mock microphones are audio <a href="https://w3c.github.io/mediacapture-main/#dfn-source">sources</a>. 
+      A mock microphone provides audio samples to <a data-cite="!MediaCaptureMain/#mediastreamtrack"><code>MediaStreamTrack</code></a> of <a data-cite="!MediaCaptureMain/#dom-mediastreamtrack-kind"><code>kind</code></a> "audio".
       The <dfn>MockMicrophoneConfiguration</dfn> dictionary is used to create a mock microphone. 
       <pre class="idl"
 >dictionary MockMicrophoneConfiguration : MockCaptureDeviceConfiguration {
@@ -138,6 +206,7 @@
         </section>
       </p>
       <p>A mock microphone device has an associated configuration of type <code>MockMicrophoneConfiguration</code>.</p>
+      <p>TODO: Decide which additional parameters to specify and whether to specify more capabilities of the mock microphone.</p>
     </section>
   </section>
   <section>

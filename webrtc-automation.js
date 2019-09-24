@@ -113,6 +113,12 @@ var respecConfig = {
        href: "https://w3c.github.io/mediacapture-main/",
        status: "CR",
        publisher: "W3C"
+     },
+     ScreenCapture: {
+       title:  "ScreenCapture",
+       href: "https://w3c.github.io/mediacapture-screen-share/",
+       status: "WD",
+       publisher: "W3C"
      }
    },
     afterEnd: function markFingerprinting () {
