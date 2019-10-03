@@ -8,7 +8,7 @@ var respecConfig = {
    specStatus:           "ED",
 
    // the specification's short name, as in http://www.w3.org/TR/short-name/
-   shortName:            "webrtc-automation",
+   shortName:            "media-capture-automation",
    // if your specification has a subtitle that goes below the main
    // formal title, define it here
    // subtitle   :  "an excellent document",
@@ -27,7 +27,7 @@ var respecConfig = {
    // prevED: "http://w3c.github.io/mediacapture-main/archives/20170605/getusermedia.html",
 
    // if there a publicly available Editor's Draft, this is the link
-   edDraftURI: "https://youennf.github.io/webrtc-automation/webrtc-automation.html",
+   edDraftURI: "https://youennf.github.io/media-capture-automation/media-capture-automation.html",
 
    // if this is a LCWD, uncomment and set the end of its review period
    // lcEnd: "2009-08-05",
