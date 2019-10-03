@@ -1,2 +1,2 @@
 # media-capture-automation
-Media Capture automation stuff
+Repo for https://youennf.github.io/media-capture-automation/media-capture-automation.html
