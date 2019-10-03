@@ -1,2 +1,2 @@
-# webrtc-automation
-WebRTC automation stuff
+# media-capture-automation
+Media Capture automation stuff
