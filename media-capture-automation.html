@@ -216,7 +216,10 @@ dictionary MockCapturePromptResultConfiguration {
 >dictionary MockCameraConfiguration : MockCaptureDeviceConfiguration {
   double defaultFrameRate = 30;
   DOMString facingMode = "user";
-  // TODO: Add more parameters if needed.
+  // TODO: Add more capabilities parameters like:
+  // ULongRange width;
+  // ULongRange height;
+  // DoubleRange frameRate;
 };</pre></p>
       <p>The <dfn>MockCameraConfiguration</dfn> dictionary is used to create a mock camera. 
         <section>
@@ -249,7 +252,9 @@ dictionary MockCapturePromptResultConfiguration {
       <pre class="idl"
 >dictionary MockMicrophoneConfiguration : MockCaptureDeviceConfiguration {
   unsigned long defaultSampleRate = 44100;
-  // TODO: Add more parameters if needed.
+  // TODO: Add more capabilities parameters like:
+  // ULongRange sampleRate;
+  // sequence<boolean> echoCancellation;
 };</pre></p>
       <p>
         <section>
