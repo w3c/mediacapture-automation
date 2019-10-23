@@ -46,29 +46,7 @@
   <section>
     <h2>Media Capture Permissions</h2>
     <section>
-      <h3>First approach: use [[Permissions]] automation</h3>
-      <p>The [[Permissions]] specification defines permissions to camera and microphone as well as display.
-      It defines in particular the <a data-cite="!Permissions/#set-permission-command">extension command</a> to set each permission of the browsing contexts of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
-      </p>
-      <p>In the context of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>, the following rules apply for camera, microphone and display permissions:
-        <ul>
-          <li>The <a data-cite="!WebDriver/#dfn-endpoint-node">WebDriver endpoint node</a> MUST be able to set the
-          <a data-cite="!Permissions/#permission-state">permission state</a> of the
-          <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a> of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
-          This state applies to all the children of the <a data-cite="!WebDriver/#dfn-current-top-level-browsing-context">current top level browsing context</a>.
-          </li>
-          <li>When the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
-          the <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> will treat the state as if
-          <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> when executing 
-          <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a>
-          and <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a href="https://w3c.github.io/mediacapture-screen-share/#dfn-getdisplaymedia">getDisplayMedia</a>.
-          This allows a good default setup and enables to use getDisplayMedia in automation contexts  since <a data-cite="!Permissions/#dom-permissionstate-granted">"granted"</a> is not a valid value for the display permission.
-          </li>
-        </ul>
-      </p>
-    </section>
-    <section>
-      <h3>Second approach: control prompt results</h3>
+      <h3>Control prompt results</h3>
       <p>A <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> handles two prompt result values:
         <ol>
           <li>
@@ -96,6 +74,17 @@
             </p>
           </li>
         </ol>
+        <div class="note">
+          <p>Another approach is to use [[Permissions]] automation.
+          The [[Permissions]] specification defines permissions to camera and microphone as well as display.
+          It defines in particular the <a data-cite="!Permissions/#set-permission-command">extension command</a> to set each permission of the browsing contexts of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
+          </p>
+          <p>[[Permissions]] automation is not well suited for getUserMedia and getDisplayMedia APIs.
+          While the [[Permissions]] automation API allows to set each context indepdendently,
+          user agents may grant/deny automatically requests based on past getUserMedia calls of the given or related contexts.
+          The "prompt" value is also not useful for automation purposes and the value "granted" cannot be used for getDisplayMedia.
+          </p>
+        </div>
       </p>
       <section>
         <h4 id="set-capture-prompt-result">Set capture prompt result</h3>
