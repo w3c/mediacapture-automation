@@ -4,16 +4,9 @@
   <link href="media-capture-automation.css" rel="stylesheet" type="text/css">
   <title>Media Capture Automation</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <script class="remove" src="respec-w3c-common.js" type="text/javascript">
-  //<![CDATA[
-  <!-- keep this comment -->
-  //]]>
+  <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c">
   </script>
-  <script class="remove" src="media-capture-automation.js" type="text/javascript">
-  //<![CDATA[
-  <!-- keep this comment -->
-  //]]>
-  </script>
+  <script class="remove" src="media-capture-automation.js"></script>
 </head>
 <body>
   <section id="abstract">
@@ -27,7 +20,7 @@
   </section>
   <section class="informative" id="intro">
     <h2>Introduction</h2>
-    <p>This document defines a set of <a data-cite="!WebDriver/#dfn-extension-command">extension commands</a> to the [[WebDriver]] specification for controlling mock capture devices and access rules to these devices.</p>
+    <p>This document defines a set of <a data-cite="webdriver2/#dfn-extension-command">extension commands</a> to the [[WebDriver2]] specification for controlling mock capture devices and access rules to these devices.</p>
   </section>
   <section id="conformance">
     <p>This specification defines conformance criteria that apply to a single
@@ -40,65 +33,65 @@
     <p>Implementations that use ECMAScript [[ECMA-262]] to implement the APIs
     defined in this specification must implement them in a manner consistent
     with the ECMAScript Bindings defined in the Web IDL specification
-    [[!WEBIDL-1]], as this specification uses that specification and
+    [[WEBIDL]], as this specification uses that specification and
     terminology.</p>
   </section>
   <section>
     <h2>Media Capture Permissions</h2>
     <section>
       <h3>Control prompt results</h3>
-      <p>A <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a> handles two prompt result values:
+      <p>A <a data-cite="webdriver2/#dfn-sessions">WebDriver session</a> handles two prompt result values:
         <ol>
           <li>
-            <p>A <dfn id="getUserMedia-prompt-result">getUserMedia prompt result</dfn> which is either "granted" or "denied".
-            This value is used when <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a>
-            is executing the <a data-cite="!MediaCaptureMain/#request-permission-to-use">request permission to use</a> step.
-            If the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
-            the <a data-cite="!MediaCaptureMain/#request-permission-to-use">request permission to use</a> step
-            will return the value of the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a>.
-            The default value of <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> is "granted".</p>
+            <p>A <dfn id="getUserMedia-prompt-result">getUserMedia prompt result</dfn> which is either <code>"granted"</code> or <code>"denied"</code>.
+            This value is used when {{MediaDevices.getUserMedia()}}
+            is executing the <a data-cite="mediacapture-streams/#request-permission-to-use">request permission to use</a> step.
+            If the [=permission state=] is {{PermissionState/"prompt"}},
+            the <a data-cite="mediacapture-streams/#request-permission-to-use">request permission to use</a> step
+            will return the value of the [=getUserMedia prompt result=].
+            The default value of [=getUserMedia prompt result=] is <code>"granted"</code>.</p>
           </li>
           <li>
-            <p>A <dfn id="getDisplayMedia-prompt-result">getDisplayMedia prompt result</dfn> which is either "granted" or "denied".
+            <p>A <dfn id="getDisplayMedia-prompt-result">getDisplayMedia prompt result</dfn> which is either <code>"granted"</code> or <code>"denied"</code>.
 
-            This value is used when <a data-cite="!MediaCaptureMain/#dom-mediadevices"><code>MediaDevices</code></a>.<a data-cite="ScreenCapture/#dfn-getdisplaymedia">getDisplayMedia</a>
-            is executing the <a data-cite="ScreenCapture/#prompt-the-user-to-choose">prompt the user to choose</a> step.
-            If the <a data-cite="!Permissions/#permission-state">permission state</a> is <a data-cite="!Permissions/#dom-permissionstate-prompt">"prompt"</a>,
-            the <a data-cite="ScreenCapture/#prompt-the-user-to-choose">prompt the user to choose</a> step
+            This value is used when {{MediaDevices}}</a>.<a data-cite="screen-capture/#dfn-getdisplaymedia">getDisplayMedia</a>
+            is executing the <a data-cite="screen-capture/#prompt-the-user-to-choose">prompt the user to choose</a> step.
+            If the [= permission state =] is {{PermissionState/"prompt"}},
+            the <a data-cite="screen-capture/#prompt-the-user-to-choose">prompt the user to choose</a> step
             will return:
             <ul>
-              <li>"denied" if the value of the <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "denied".</li>
-              <li>a list of mock provided media if the value of the <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "granted".</li>
+              <li><code>"denied"</code> if the value of the [= getDisplayMedia prompt result =] is <code>"denied"</code>.</li>
+              <li>a list of mock provided media if the value of the [= getDisplayMedia prompt result =] is <code>"granted"</code>.</li>
             </ul>
-            The default value of <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> is "granted".</p>
+            The default value of [= getDisplayMedia prompt result =] is <code>"granted"</code>.</p>
             </p>
           </li>
         </ol>
         <div class="note">
           <p>Another approach is to use [[Permissions]] automation.
           The [[Permissions]] specification defines permissions to camera and microphone as well as display.
-          It defines in particular the <a data-cite="!Permissions/#set-permission-command">extension command</a> to set each permission of the browsing contexts of a <a data-cite="!WebDriver/#dfn-sessions">WebDriver session</a>.
+          It defines in particular the <a data-cite="permissions/#set-permission-command">extension command to set each permission</a> of the browsing contexts of a <a data-cite="webdriver2/#dfn-sessions">WebDriver session</a>.
           </p>
-          <p>[[Permissions]] automation is not well suited for getUserMedia and getDisplayMedia APIs.
+          <p>[[Permissions]] automation is not well suited for {{MediaDevices/getUserMedia()}} and <code>getDisplayMedia</code> APIs.
           While the [[Permissions]] automation API allows to set each context indepdendently,
           user agents may grant/deny automatically requests based on past getUserMedia calls of the given or related contexts.
-          The "prompt" value is also not useful for automation purposes and the value "granted" cannot be used for getDisplayMedia.
+          The {{PermissionState/"prompt"}} value is also not useful for automation purposes and the value <code>"granted"</code> cannot be used for getDisplayMedia.
           </p>
         </div>
       </p>
       <section>
-        <h4 id="set-capture-prompt-result">Set capture prompt result</h3>
+        <h4>Set capture prompt result</h3>
         <table>
          <tbody>
           <tr>
            <th>HTTP Method
-           <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+           <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
           <tr>
            <td>POST
            <td>/session/{session id}/capture-devices/prompt-result
         </table>
-        <p>The <dfn id="set-capture-prompt-result">set capture prompt result</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a>
-        sets the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> and <a href="getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> values.
+        <p>The <dfn id="set-capture-prompt-result">set capture prompt result</dfn> <a data-cite="webdriver2/#dfn-extension-command">extension command</a>
+        sets the [=getUserMedia prompt result=] and [=getDisplayMedia prompt result=] values.
         <pre class="idl"
 >enum MockCapturePromptResult {
   "granted",
@@ -110,65 +103,65 @@ dictionary MockCapturePromptResultConfiguration {
   MockCapturePromptResult getDisplayMedia;
 };</pre></p>
         <p>The <dfn>MockCapturePromptResultConfiguration</dfn> dictionary is used to get and set the
-        <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> and
-        <a href="getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> values.</p>
+        [=getUserMedia prompt result=] and
+        [= getDisplayMedia prompt result =] values.</p>
 
-        <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
           <ol>
             <li>
               <p>Let <var>configuration</var> be the command <var>parameters</var> argument,
-              <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>MockCapturePromptResultConfiguration</code>.
-              If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-              with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-              <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+              [=converted to idl values | converted to an IDL value =] of {{MockCapturePromptResultConfiguration}}.
+              If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+              with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+              <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
             </li>
             <li>
-              <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-              <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-              with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+              <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+              <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+              with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
             </li>
             <li>
-              <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-              and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+              <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+              and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
             </li>
             <li><p>If <var>configuration</var>.<code>getUserMedia</code> is set,
-            set <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> 
+            set [=getUserMedia prompt result=] 
             to <var>configuration</var>.<code>getUserMedia</code>.</p></li> 
             <li><p>If <var>configuration</var>.<code>getDisplayMedia</code> is set,
-            set <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> 
+            set [= getDisplayMedia prompt result =] 
             to <var>configuration</var>.<code>getDisplayMedia</code>.</p></li> 
-            <li><p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p></li>
+            <li><p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p></li>
           </ol>
         </p>
       </section>
       <section>
-        <h4 id="get-capture-prompt-result">Get capture prompt result</h3>
+        <h4>Get capture prompt result</h3>
         <table>
          <tbody>
           <tr>
            <th>HTTP Method
-           <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+           <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
           <tr>
            <td>GET
            <td>/session/{session id}/capture-devices/prompt-result
         </table>
-        <p>The <dfn id="get-capture-prompt-result">get capture prompt result</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a>
-        sets the <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a> and <a href="getDisplayMedia-prompt-result">getDisplayMedia prompt result</a> values.</p>
-        <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <p>The <dfn id="get-capture-prompt-result">get capture prompt result</dfn> <a data-cite="webdriver2/#dfn-extension-command">extension command</a>
+        sets the [=getUserMedia prompt result=] and [= getDisplayMedia prompt result =] values.</p>
+        <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
           <ol>
             <li>
-              <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-              <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-              with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+              <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+              <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+              with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
             </li>
             <li>
-              <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-              and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+              <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+              and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
             </li>
             <li><p>Let <var>result</var> be a <code>MockCapturePromptResultConfiguration</code>.</p></li>
-            <li><p>Set <var>result</var>.<code>getUserMedia</code> to <a href="#getUserMedia-prompt-result">getUserMedia prompt result</a>.</p></li>
-            <li><p>Set <var>result</var>.<code>getDisplayMedia</code> to <a href="#getDisplayMedia-prompt-result">getDisplayMedia prompt result</a>.</p></li>
-            <li><p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <var>result</var>.</p></li>
+            <li><p>Set <var>result</var>.<code>getUserMedia</code> to [=getUserMedia prompt result=].</p></li>
+            <li><p>Set <var>result</var>.<code>getDisplayMedia</code> to [= getDisplayMedia prompt result =].</p></li>
+            <li><p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <var>result</var>.</p></li>
           </ol>
         </p>
       </section>
@@ -178,16 +171,16 @@ dictionary MockCapturePromptResultConfiguration {
     <h2>Mock Capture Devices</h2>
     <p>A mock capture device simulates a real capture device or source of data.
     This specification defines mock camera and microphone devices.</p>
-    <p>A <a data-cite="!WebDriver/#dfn-sessions">session</a> has a <dfn id="mock-capture-device-set">set of mock capture devices</dfn>.
-    This set is used in <a data-cite="MediaCaptureMain/#dom-navigator-getusermedia">getUserMedia</a> as available sources and in
-    <a data-cite="MediaCaptureMain/#dom-mediadevices-enumeratedevices">enumerateDevices</a> as available media decices.</p>
+    <p>A <a data-cite="webdriver2/#dfn-sessions">session</a> has a <dfn id="mock-capture-device-set" data-lt="mock capture device set">set of mock capture devices</dfn>.
+    This set is used in <a data-cite="mediacapture-streams/#dom-navigator-getusermedia">getUserMedia</a> as available sources and in
+    <a data-cite="mediacapture-streams/#dom-mediadevices-enumeratedevices">enumerateDevices</a> as available media decices.</p>
     <p>A <a href="#mock-capture-device-set">set of mock capture devices</a> consists in a <a href="#mock-cameras">list of mock cameras</a> and a <a href="#mock-microphones">list of mock microphones</a>.</p>
     </p>
-    <!-- TODO: Add the necessary hooks in <a data-cite="MediaCaptureMain/#the-model-sources-sinks-constraints-and-settings">mediacapture-main spec</a> and refer to these hooks in the above definitions. -->
+    <!-- TODO: Add the necessary hooks in <a data-cite="mediacapture-streams/#the-model-sources-sinks-constraints-and-settings">mediacapture-main spec</a> and refer to these hooks in the above definitions. -->
 
     <section>
       <h3 id="mock-capture-device">Mock Capture Device</h3>
-      <p>Mock capture devices are video or audio <a href="https://w3c.github.io/mediacapture-main/#dfn-source">sources</a>.
+      <p>Mock capture devices are video or audio <a data-cite="mediacapture-streams/#dfn-source">sources</a>.
       <pre class="idl"
 >dictionary MockCaptureDeviceConfiguration {
   DOMString label;
@@ -196,14 +189,14 @@ dictionary MockCapturePromptResultConfiguration {
 };</pre></p>
       <p>The <dfn>MockCaptureDeviceConfiguration</dfn> dictionary is used to create mock capture devices or get the state of mock capture devices. 
         <section>
-            <h4>Dictionary <a class="idlType">MockCaptureDeviceConfiguration</a> Members</h4>
+            <h4>Dictionary {{MockCaptureDeviceConfiguration}} Members</h4>
             <dl data-link-for="MockCaptureDeviceConfiguration" data-dfn-for="MockCaptureDeviceConfiguration" class="dictionary-members">
-              <dt><dfn><code>label</code></dfn> of type <span class="idlMemberType">DOMString</span></dt>
-              <dd>The system-wide label of the microphone, exposed as <a data-cite="!MediaCaptureMain/#dom-mediadeviceinfo-label">label</a> member.</dd>
-              <dt><dfn><code>deviceId</code></dfn> of type <span class="idlMemberType">DOMString</span></dt>
-              <dd>The system-wide identifier of the capture device which allows generating <a data-cite="!MediaCaptureMain/#def-constraint-deviceId">deviceId</a> values.</dd>
-              <dt><dfn><code>groupId</code></dfn> of type <span class="idlMemberType">DOMString</span></dt>
-              <dd>The system-wide group identifier of the capture device which allows generating <a data-cite="!MediaCaptureMain/#def-constraint-groupId">groupId</a> values.</dd>
+              <dt><dfn>label</dfn> of type {{DOMString}}</dt>
+              <dd>The system-wide label of the microphone, exposed as {{MediaDeviceInfo/label}}.</dd>
+              <dt><dfn>deviceId</dfn> of type {{DOMString}}</dt>
+              <dd>The system-wide identifier of the capture device which allows generating {{MediaTrackSupportedConstraints/deviceId}} values.</dd>
+              <dt><dfn>groupId</dfn> of type {{DOMString}}</dt>
+              <dd>The system-wide group identifier of the capture device which allows generating {{MediaTrackSupportedConstraints/groupId}} values.</dd>
             </dl>
         </section>
       </p>
@@ -211,7 +204,7 @@ dictionary MockCapturePromptResultConfiguration {
     <section>
       <h3 id="mock-camera">Mock Camera</h3>
       <p>Mock cameras are video <a href="https://w3c.github.io/mediacapture-main/#dfn-source">sources</a>.
-      A mock camera provides video frames to <a data-cite="!MediaCaptureMain/#mediastreamtrack"><code>MediaStreamTrack</code></a> of <a data-cite="!MediaCaptureMain/#dom-mediastreamtrack-kind"><code>kind</code></a> "video".
+      A mock camera provides video frames to {{MediaStreamTrack}} of {{MediaStreamTrack/kind}} <code>"video"</code>.
       <pre class="idl"
 >dictionary MockCameraConfiguration : MockCaptureDeviceConfiguration {
   double defaultFrameRate = 30;
@@ -223,31 +216,31 @@ dictionary MockCapturePromptResultConfiguration {
 };</pre></p>
       <p>The <dfn>MockCameraConfiguration</dfn> dictionary is used to create a mock camera. 
         <section>
-            <h4>Dictionary <a class="idlType">MockCameraConfiguration</a> Members</h4>
+            <h4>Dictionary {{MockCameraConfiguration}} Members</h4>
             <dl data-link-for="MockCameraConfiguration" data-dfn-for="MockCameraConfiguration" class="dictionary-members">
-              <dt><dfn><code>defaultFrameRate</code></dfn> of type <span class="idlMemberType">double</span></dt>
-              <dd>The <a data-cite="!MediaCaptureMain/#def-constraint-frameRate">frame rate</a> to use by default when creating a video source
-              if no frame rate constraint is provided by <a data-cite="!MediaCaptureMain/#dom-mediadevices-getusermedia">getUserMedia</a>.</dd>
-              <dt><dfn><code>facingMode</code></dfn> of type <span class="idlMemberType">DOMString</span></dt>
-              <dd>The <a data-cite="!MediaCaptureMain/#dom-videofacingmodeenum">facingMode</a> value of the mock camera. A mock camera supports a single value.</dd>
+              <dt><dfn>defaultFrameRate</dfn> of type {{double}}</dt>
+              <dd>The <a data-cite="mediacapture-streams/#def-constraint-frameRate">frame rate</a> to use by default when creating a video source
+              if no frame rate constraint is provided by {{MediaDevices.getUserMedia()}}.</dd>
+              <dt><dfn>facingMode</dfn> of type {{DOMString}}</dt>
+              <dd>The {{MediaTrackSupportedConstraints/facingMode}} value of the mock camera. A mock camera supports a single value.</dd>
             </dl>
         </section>
       </p>
-      <p>A mock camera device has an associated configuration of type <code>MockCameraConfiguration</code>.</p>
-      <p>A <a data-cite="!WebDriver/#dfn-sessions">session</a> has a <dfn id="mock-cameras">list of mock cameras</dfn>.
-      <p>At creation of the <a data-cite="!WebDriver/#dfn-sessions">session</a>, the <a href="#mock-cameras">list of mock cameras</a> MUST contain one mock camera,  whose configuration is:</p>
+      <p>A mock camera device has an associated configuration of type {{MockCameraConfiguration}}.</p>
+      <p>A <a data-cite="webdriver2/#dfn-sessions">session</a> has a <dfn id="mock-cameras">list of mock cameras</dfn>.
+      <p>At creation of the <a data-cite="webdriver2/#dfn-sessions">session</a>, the [= list of mock cameras =] MUST contain one mock camera,  whose configuration is:</p>
       <pre
 >{
   defaultFrameRate = 30;
   facingMode = "user";
 };</pre>
-      <p>The <a href="#mock-cameras">list of mock cameras</a> MAY contain other mock cameras by default.</p>
+      <p>The [= list of mock cameras =] MAY contain other mock cameras by default.</p>
       <!--p>TODO: Should we define that there is a default mock camera device per WebDriver session?</p-->
     </section>
     <section>
       <h3 id="mock-microphone">Mock Microphone</h2>
       <p>Mock microphones are audio <a href="https://w3c.github.io/mediacapture-main/#dfn-source">sources</a>. 
-      A mock microphone provides audio samples to <a data-cite="!MediaCaptureMain/#mediastreamtrack"><code>MediaStreamTrack</code></a> of <a data-cite="!MediaCaptureMain/#dom-mediastreamtrack-kind"><code>kind</code></a> "audio".
+      A mock microphone provides audio samples to {{MediaStreamTrack}} of {{MediaStreamTrack/kind}} <code>"audio"</code>.
       The <dfn>MockMicrophoneConfiguration</dfn> dictionary is used to create a mock microphone. 
       <pre class="idl"
 >dictionary MockMicrophoneConfiguration : MockCaptureDeviceConfiguration {
@@ -258,61 +251,61 @@ dictionary MockCapturePromptResultConfiguration {
 };</pre></p>
       <p>
         <section>
-            <h4>Dictionary <a class="idlType">MockMicrophoneConfiguration</a> Members</h4>
+            <h4>Dictionary {{MockMicrophoneConfiguration}} Members</h4>
             <dl data-link-for="MockMicrophoneConfiguration" data-dfn-for="MockMicrophoneConfiguration" class="dictionary-members">
-              <dt><dfn><code>defaultSampleRate</code></dfn> of type <span class="idlMemberType">unsigned long</span></dt>
-              <dd>The <a data-cite="!MediaCaptureMain/#def-constraint-sampleRate">sample rate</a> to use by default when creating an audio source
-              if no sample rate constraint exists when calling <a data-cite="!MediaCaptureMain/#dom-mediadevices-getusermedia">getUserMedia</a>.</dd>
+              <dt><dfn>defaultSampleRate</dfn> of type {{unsigned long}}</dt>
+              <dd>The <a data-cite="mediacapture-streams/#def-constraint-sampleRate">sample rate</a> to use by default when creating an audio source
+              if no sample rate constraint exists when calling {{MediaDevices.getUserMedia()}}.</dd>
             </dl>
         </section>
       </p>
       <p>A mock microphone device has an associated configuration of type <code>MockMicrophoneConfiguration</code>.</p>
-      <p>A <a data-cite="!WebDriver/#dfn-sessions">session</a> has a <dfn id="mock-microphones">list of mock microphones</dfn>.</p>
-      <p>A <a data-cite="!WebDriver/#dfn-sessions">session</a> has a <dfn id="default-microphone">default mock microphone</dfn>.</p>
-      <p>At creation of the <a data-cite="!WebDriver/#dfn-sessions">session</a>, the <a href="#mock-microphones">list of mock microphones</a> MUST contain one mock microphone,
-      defined as the <a href="#default-microphone">default mock microphone</a>,  whose configuration is:</p>
+      <p>A <a data-cite="webdriver2/#dfn-sessions">session</a> has a <dfn id="mock-microphones">list of mock microphones</dfn>.</p>
+      <p>A <a data-cite="webdriver2/#dfn-sessions">session</a> has a <dfn id="default-microphone" data-lt="default microphone">default mock microphone</dfn>.</p>
+      <p>At creation of the <a data-cite="webdriver2/#dfn-sessions">session</a>, the [= list of mock microphones =] MUST contain one mock microphone,
+      defined as the [= default mock microphone =],  whose configuration is:</p>
       <pre
 >{
   defaultSampleRate = 44100;
 };</pre>
-      <p>The <a href="#mock-microphones">list of mock microphones</a> MAY contain other mock microphones at creation of the <a data-cite="!WebDriver/#dfn-sessions">session</a>.</p>
+      <p>The [= list of mock microphones =] MAY contain other mock microphones at creation of the <a data-cite="webdriver2/#dfn-sessions">session</a>.</p>
     </section>
   </section>
   <section>
     <h2>Extension Commands</h2>
     <section>
-      <h3 id="add-mock-camera">Add a mock camera</h3>
+      <h3>Add a mock camera</h3>
       <table>
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>POST
          <td>/session/{session id}/capture-devices/camera
       </table>
-      <p>The <dfn id="add-mock-camera">add mock camera</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> adds a new mock camera.</p>
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+      <p>The <dfn id="add-mock-camera">add mock camera</dfn> <a data-cite="webdriver2/#dfn-extension-command">extension command</a> adds a new mock camera.</p>
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
             <p>Let <var>configuration</var> be the command <var>parameters</var> argument,
-            <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>MockCameraConfiguration</code>.
-            If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-            <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+            [=converted to idl values | converted to an IDL value =] of type <code>MockCameraConfiguration</code>.
+            If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+            <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
           </li>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
 
           <li>
-            <p>Let <var>mockCamera</var> be the mock camera in the <a href="#mock-cameras">list of mock cameras</a> whose <code>deviceId</code> is equal to the <a data-cite="!WebDriver/#dfn-url-variables">url variable</a> deviceId parameter, or <code>undefined</code> otherwise.</p>
+            <p>Let <var>mockCamera</var> be the mock camera in the [=list of mock cameras=] whose {{ MockCaptureDeviceConfiguration/deviceId }} is equal to the <a data-cite="webdriver2/#dfn-url-variables">url variable</a> <var>deviceId</var> parameter, or <code>undefined</code> otherwise.</p>
           </li>
           <li>
             <p>If <var>mockCamera</var> is not <code>undefined</code>, set <var>mockCamera</var>’s configuration to <var>configuration</var>.</p>
@@ -324,100 +317,100 @@ dictionary MockCapturePromptResultConfiguration {
               <!-- TODO: If some parameters are not provided (label, deviceId, groupId), generate then -->
               <li><p>Set <var>mockCamera</var>’s configuration to <var>configuration</var>.</p></li>
               <li><p>Add <var>mockCamera</var> to the list of <a href="#mock-cameras">mock cameras</a>.</p></li>
-              <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+              <li><p>Run the following step [= in parallel =]:
                 <ol>
-                  <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+                  <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
                  </ol>
               </p></li>
             </ol>
           </li>
-          <li><p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p></li>
+          <li><p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p></li>
         </ol>
       </p>
     </section>
     <section>
-      <h3 id="delete-mock-camera">Delete a mock camera</h3>
+      <h3>Delete a mock camera</h3>
       <table>
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>DELETE
          <td>/session/{session id}/capture-devices/camera/{deviceId}
       </table>
       <p>The <dfn id="delete-mock-camera">delete mock camera</dfn>
-        <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> removes a mock camera from the <a href="#mock-cameras">list of mock cameras</a>.</p> 
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <a data-cite="webdriver2/#dfn-extension-command">extension command</a> removes a mock camera from the [=list of mock cameras=].</p> 
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>Let <var>deviceId</var> be the result of <a data-cite="!WebDriver/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
-            <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>DOMString</code>.</p>
-            <p>If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-            <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+            <p>Let <var>deviceId</var> be the result of <a data-cite="webdriver2/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
+            [=converted to idl values | converted to an IDL value =] of type {{DOMString}}.</p>
+            <p>If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+            <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
           </li>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Let <var>mockCamera</var> be the mock camera in the <a href="#mock-cameras">list of mock cameras</a> whose <code>deviceId</code> is equal to the <a data-cite="!WebDriver/#dfn-url-variables">url variable</a> deviceId parameter, or <code>undefined</code> otherwise.</p>
+            <p>Let <var>mockCamera</var> be the mock camera in the <a href="#mock-cameras">list of mock cameras</a> whose {{MockCaptureDeviceConfiguration/deviceId}} is equal to the <a data-cite="webdriver2/#dfn-url-variables">url variable</a> deviceId parameter, or <code>undefined</code> otherwise.</p>
           </li>
           <li>
             <p>If <var>mockCamera</var> is not <code>undefined</code>, run the following steps:</p>
             <ol>
-              <li><p>Remove <var>mockCamera</var> from the <a href="#mock-cameras">list of mock cameras</a>.</p></li>
-              <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+              <li><p>Remove <var>mockCamera</var> from the [= list of mock cameras =].</p></li>
+              <li><p>Run the following step [= in parallel =]:
                 <ol>
-                  <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+                  <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
                 </ol>
               </p></li>
             </ol>
           </li>
           <li>
-            <p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p>
+            <p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p>
           </li>
         </ol>
       </p>
     </section>
     <section>
-      <h3 id="add-mock-microphone">Add a mock microphone</h3>
+      <h3>Add a mock microphone</h3>
       <table>
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>POST
          <td>/session/{session id}/capture-devices/microphone
       </table>
-      <p>The <dfn id="add-mock-microphone">add mock microphone</dfn> <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> adds a new mock microphone or updates an existing one.</p>
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+      <p>The <dfn id="add-mock-microphone">add mock microphone</dfn> <a data-cite="webdriver2/#dfn-extension-command">extension command</a> adds a new mock microphone or updates an existing one.</p>
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>Let <var>configuration</var> be the result of <a data-cite="!WebDriver/#dfn-getting-properties">getting the property</a> <code>configuration</code> from the <var>parameters</var>,
-            <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>MockMicrophoneConfiguration</code>.</p>
-            <p>If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-            <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+            <p>Let <var>configuration</var> be the result of <a data-cite="webdriver2/#dfn-getting-properties">getting the property</a> <code>configuration</code> from the <var>parameters</var>,
+            [=converted to idl values | converted to an IDL value =] of type {{MockMicrophoneConfiguration}}.</p>
+            <p>If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+            <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
           </li>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Let <var>mockMicrophone</var> be the mock microphone in the <a href="#mock-microphones">list of mock microphones</a> whose <code>deviceId</code> is equal to the <a data-cite="!WebDriver/#dfn-url-variables">url variable</a> deviceId parameter, or <code>undefined</code> otherwise.</p>
+            <p>Let <var>mockMicrophone</var> be the mock microphone in the [= list of mock microphones =] whose {{MockCaptureDeviceConfiguration/deviceId}} is equal to the <a data-cite="webdriver2/#dfn-url-variables">url variable</a> <var>deviceId</var> parameter, or <code>undefined</code> otherwise.</p>
           </li>
           <li>
             <p>If <var>mockMicrophone</var> is not <code>undefined</code>, set <var>mockMicrophone</var>’s configuration to <var>configuration</var>.</p>
@@ -430,17 +423,17 @@ dictionary MockCapturePromptResultConfiguration {
               <li><p>Set <var>mockMicrophone</var>’s configuration to <var>configuration</var>.</p></li>
               <li><p>Add <var>mockMicrophone</var> to the list of mock devices.</p></li>
               <li>
-                <p>If the <a href="#default-microphone">default microphone</a> is <code>undefined</code>, set
-                <a href="#default-microphone">default microphone</a> to <var>mockMicrophone</var>.</p>
+                <p>If the [= default microphone =] is <code>undefined</code>, set
+                [=default microphone=] to <var>mockMicrophone</var>.</p>
               </li>
-              <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+              <li><p>Run the following step [= in parallel =]:
                 <ol>
-                  <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+                  <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
                  </ol>
               </p></li>
             </ol>
           </li>
-          <li><p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p></li>
+          <li><p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p></li>
         </ol>
       </p>
     </section>
@@ -450,52 +443,52 @@ dictionary MockCapturePromptResultConfiguration {
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>DELETE
          <td>/session/{session id}/capture-devices/{deviceId}
       </table>
       <p>The <dfn id="delete-mock-capture-device">delete mock capture device</dfn>
-        <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> deletes a new mock capture device.</p> 
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <a data-cite="webdriver2/#dfn-extension-command">extension command</a> deletes a new mock capture device.</p> 
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>Let <var>deviceId</var> be the result of <a data-cite="!WebDriver/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
-            <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>DOMString</code>.</p>
-            <p>If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-            <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+            <p>Let <var>deviceId</var> be the result of <a data-cite="webdriver2/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
+            [=converted to idl values | converted to an IDL value =] of type {{DOMString}}.</p>
+            <p>If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+            <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
           </li>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Let <var>mockMicrophone</var> be the mock microphone in the <a href="#mock-microphones">list of mock microphones</a> whose <code>deviceId</code> is equal to the <a data-cite="!WebDriver/#dfn-url-variables">url variable</a> deviceId parameter, or <code>undefined</code> otherwise.</p>
+            <p>Let <var>mockMicrophone</var> be the mock microphone in the [=list of mock microphones=] whose {{MockCaptureDeviceConfiguration/deviceId}} is equal to the <a data-cite="webdriver2/#dfn-url-variables">url variable</a> <var>deviceId</var> parameter, or <code>undefined</code> otherwise.</p>
           </li>
           <li>
             <p>If <var>mockMicrophone</var> is not <code>undefined</code>, run the following steps:</p>
             <ol>
-              <li><p>Remove <var>mockMicrophone</var> from the <a href="#mock-microphones">list of mock microphones</a>.</p></li>
+              <li><p>Remove <var>mockMicrophone</var> from the [=list of mock microphones=].</p></li>
               <li>
-                <p>If <var>mockMicrophone</var> is the <a href="#default-microphone">default microphone</a>,
-                set the <a href="#default-microphone">default microphone</a> to the first microphone in the <a href="#mock-microphones">list of mock microphones</a>
+                <p>If <var>mockMicrophone</var> is the [=default microphone=],
+                set the [=default microphone=] to the first microphone in the [=list of mock microphones=]
                 if not empty and to <code>undefined</code> otherwise.</p>
               </li>
-              <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+              <li><p>Run the following step [= in parallel =]:
                 <ol>
-                  <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+                  <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
                 </ol>
               </p></li>
             </ol>
           </li>
           <li>
-            <p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p>
+            <p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p>
           </li>
         </ol>
       </p>
@@ -506,115 +499,115 @@ dictionary MockCapturePromptResultConfiguration {
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>POST
          <td>/session/{session id}/capture-devices/default-microphone
       </table>
       <p>The <dfn id="set-default-mock-microphne-device">default mock microphone device</dfn>
-        <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> sets the default mock microphone device.</p> 
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <a data-cite="webdriver2/#dfn-extension-command">extension command</a> sets the default mock microphone device.</p> 
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>Let <var>deviceId</var> be the result of <a data-cite="!WebDriver/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
-            <a data-cite="!WebIDL/#dfn-convert-ecmascript-to-idl-value">converted to an IDL value</a> of type <code>DOMString</code>.</p>
-            <p>If this throws an exception, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a>
-            <a data-cite="!WebDriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.</p>
+            <p>Let <var>deviceId</var> be the result of <a data-cite="webdriver2/#dfn-getting-properties">getting the property</a> <code>deviceId</code> from the <var>parameters</var>,
+            [=converted to idl values | converted to an IDL value =] of type {{DOMString}}.</p>
+            <p>If this throws an exception, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a>
+            <a data-cite="webdriver2/#dfn-invalid-argument">invalid argument</a>.</p>
           </li>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Let <var>mockMicrophone</var> be the mock microphone in the <a href="#mock-microphones">list of mock microphones</a> whose <code>deviceId</code> is equal to <var>deviceId</var> or <code>undefined</code> otherwise.</p>
+            <p>Let <var>mockMicrophone</var> be the mock microphone in the [=list of mock microphones=] whose {{MockCaptureDeviceConfiguration/deviceId}} is equal to <var>deviceId</var> or <code>undefined</code> otherwise.</p>
           </li>
           <li>
             <p>If <var>mockMicrophone</var> is not <code>undefined</code>, run the following steps:</p>
             <ol>
               <li><p>Set the <a href="">default mock microphone</a> to <var>mockMicrophone</var>.</p></li>
-              <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+              <li><p>Run the following step [= in parallel =]:
                 <ol>
-                  <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+                  <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
                  </ol>
               </p></li>
             </ol>
           </li>
           <li>
-            <p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <coder>null</code>.</p>
+            <p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <coder>null</code>.</p>
           </li>
         </ol>
       </p>
     </section>
     <section>
-      <h3 id="reset-mock-capture-devices">Reset mock capture devices</h3>
+      <h3>Reset mock capture devices</h3>
       <table>
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>DELETE
          <td>/session/{session id}/capture-devices
       </table>
       <p>The <dfn id="reset-mock-capture-devices">reset mock capture devices</dfn>
-        <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> resets the list of mock capture devices to the default list of mock capture devices.</p> 
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <a data-cite="webdriver2/#dfn-extension-command">extension command</a> resets the list of mock capture devices to the default list of mock capture devices.</p> 
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Set the the <a href="#mock-capture-device-set">mock capture device set</a> to the default mock capture device set.</p>
+            <p>Set the the [=mock capture device set=] to the default mock capture device set.</p>
           </li>
-          <li><p>Run the following step <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel:</a>
+          <li><p>Run the following step [=in parallel=]:</a>
             <ol>
-              <li><p>Execute the <a data-cite="!MediaCaptureMain/#mediadevices">'media input device changed'</a> steps.</p></li>
+              <li><p>Execute the <a data-cite="mediacapture-streams/#mediadevices">'media input device changed'</a> steps.</p></li>
              </ol>
           </p></li>
           <li>
-            <p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data <code>null</code>.</p>
+            <p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data <code>null</code>.</p>
           </li>
         </ol>
       </p>
     </section>
     <section>
-      <h3 id="get-mock-capture-devices">Get mock capture devices</h3>
+      <h3>Get mock capture devices</h3>
       <table>
        <tbody>
         <tr>
          <th>HTTP Method
-         <th><a data-cite="!WebDriver/#dfn-extension-command-uri-template">URI Template</a>
+         <th><a data-cite="webdriver2/#dfn-extension-command-uri-template">URI Template</a>
         <tr>
          <td>GET
          <td>/session/{session id}/capture-devices
       </table>
       <p>The <dfn id="get-mock-capture-devices">get mock capture devices</dfn>
-        <a data-cite="!WebDriver/#dfn-extension-command">extension command</a> gets the list of mock capture devices.</p> 
-      <p>The <a data-cite="!WebDriver/#dfn-remote-end-steps">remote end steps</a> are:
+        <a data-cite="webdriver2/#dfn-extension-command">extension command</a> gets the list of mock capture devices.</p> 
+      <p>The <a data-cite="webdriver2/#dfn-remote-end-steps">remote end steps</a> are:
         <ol>
           <li>
-            <p>If the <a data-cite="!WebDriver/#dfn-current-browsing-context">current browsing context</a> is
-            <a data-cite="!WebDriver/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>
-            with <a data-cite="!WebDriver/#dfn-error-code">WebDriver error code</a> <a data-cite="!WebDriver/#dfn-no-such-window">no such window</a>.</p>
+            <p>If the <a data-cite="webdriver2/#dfn-current-browsing-context">current browsing context</a> is
+            <a data-cite="webdriver2/#dfn-no-longer-open">no longer open</a>, return a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>
+            with <a data-cite="webdriver2/#dfn-error-code">WebDriver error code</a> <a data-cite="webdriver2/#dfn-no-such-window">no such window</a>.</p>
           </li>
           <li>
-            <p><a data-cite="!WebDriver/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
-            and return its value if it is a <a data-cite="!WebDriver/#dfn-errors">WebDriver error</a>.</p>
+            <p><a data-cite="webdriver2/#dfn-handle-any-user-prompts">Handle any user prompts</a>,
+            and return its value if it is a <a data-cite="webdriver2/#dfn-errors">WebDriver error</a>.</p>
           </li>
           <li>
-            <p>Return <a data-cite="!WebDriver/#dfn-success">success</a> with data as the <a href="#mock-capture-device-set">mock capture device set</a>, serialized as JSON.</p>
+            <p>Return <a data-cite="webdriver2/#dfn-success">success</a> with data as the [=mock capture device set=], serialized as JSON.</p>
           </li>
         </ol>
         <!--p>TODO: define serialization.</p-->
