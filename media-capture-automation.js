@@ -4,12 +4,13 @@ var respecConfig = {
 
    // the specification's short name, as in http://www.w3.org/TR/short-name/
    //shortName:            "mediacapture-automation",
-  github: "w3c/mediacapture-automation",
+  github: {repoURL: "https://github.com/w3c/mediacapture-automation",     branch: "master"},
   group: "webrtc",
    editors:  [
      { name: "Youenn Fablet", w3cid:96458 },
        // company: "Your Company", companyURL: "http://example.com/" },
        // { w3cid: "85118", name: "Daniel C. Burnett", company: "Invited Expert" },
    ],
-  xref: ["mediacapture-streams", "webdriver", "permissions", "html"]
+  xref: ["mediacapture-streams", "webdriver", "permissions", "html"],
+  latestVersion: null
 };
