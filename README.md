@@ -1,2 +1,1 @@
-# media-capture-automation
-Repo for https://youennf.github.io/media-capture-automation/media-capture-automation.html
+Repo for [Media Capture Automation specification](https://w3c.github.io/mediacapture-automation/) from the WebRTC Working Group
