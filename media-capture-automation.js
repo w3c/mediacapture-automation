@@ -4,7 +4,7 @@ var respecConfig = {
 
    // the specification's short name, as in http://www.w3.org/TR/short-name/
    //shortName:            "mediacapture-automation",
-  github: {repoURL: "https://github.com/w3c/mediacapture-automation",     branch: "master"},
+  github: {repoURL: "https://github.com/w3c/mediacapture-automation",     branch: "main"},
   group: "webrtc",
    editors:  [
      { name: "Youenn Fablet", w3cid:96458 },
