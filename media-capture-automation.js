@@ -11,6 +11,6 @@ var respecConfig = {
        // company: "Your Company", companyURL: "http://example.com/" },
        // { w3cid: "85118", name: "Daniel C. Burnett", company: "Invited Expert" },
    ],
-  xref: ["mediacapture-streams", "webdriver", "permissions", "html"],
+  xref: ["mediacapture-streams", "webdriver2", "permissions", "html", "screen-capture", "infra"],
   latestVersion: null
 };
