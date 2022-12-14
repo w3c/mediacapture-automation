@@ -24,7 +24,7 @@
   </section>
   <section id="conformance">
     <p>This specification defines conformance criteria that apply to a single
-    product: the <dfn>User Agent</dfn> that implements the interfaces that it
+    product: the <a>User Agent</a> that implements the interfaces that it
     contains.</p>
     <p>Conformance requirements phrased as algorithms or specific steps may be
     implemented in any manner, so long as the end result is equivalent. (In
@@ -90,7 +90,7 @@
            <td>POST
            <td>/session/{session id}/capture-devices/prompt-result
         </table>
-        <p>The <dfn id="set-capture-prompt-result">set capture prompt result</dfn> <a>extension command</a>
+        <p>The <dfn class=export data-dfn-for="extension commands" id="set-capture-prompt-result">set capture prompt result</dfn> <a>extension command</a>
         sets the [=getUserMedia prompt result=] and [=getDisplayMedia prompt result=] values.
         <pre class="idl"
 >enum MockCapturePromptResult {
@@ -145,7 +145,7 @@ dictionary MockCapturePromptResultConfiguration {
            <td>GET
            <td>/session/{session id}/capture-devices/prompt-result
         </table>
-        <p>The <dfn id="get-capture-prompt-result">get capture prompt result</dfn> <a>extension command</a>
+        <p>The <dfn class=export data-dfn-for="extension commands" id="get-capture-prompt-result">get capture prompt result</dfn> <a>extension command</a>
         sets the [=getUserMedia prompt result=] and [= getDisplayMedia prompt result =] values.</p>
         <p>The <a>remote end steps</a> are:
           <ol>
@@ -284,7 +284,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>POST
          <td>/session/{session id}/capture-devices/camera
       </table>
-      <p>The <dfn id="add-mock-camera">add mock camera</dfn> <a>extension command</a> adds a new mock camera.</p>
+      <p>The <dfn class=export data-dfn-for="extension commands" id="add-mock-camera">add mock camera</dfn> <a>extension command</a> adds a new mock camera.</p>
       <p>The <a>remote end steps</a> are:
         <ol>
           <li>
@@ -339,7 +339,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>DELETE
          <td>/session/{session id}/capture-devices/camera/{deviceId}
       </table>
-      <p>The <dfn id="delete-mock-camera">delete mock camera</dfn>
+      <p>The <dfn class=export  data-dfn-for="extension commands" id="delete-mock-camera">delete mock camera</dfn>
         <a>extension command</a> removes a mock camera from the [=list of mock cameras=].</p> 
       <p>The <a>remote end steps</a> are:
         <ol>
@@ -390,7 +390,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>POST
          <td>/session/{session id}/capture-devices/microphone
       </table>
-      <p>The <dfn id="add-mock-microphone">add mock microphone</dfn> <a>extension command</a> adds a new mock microphone or updates an existing one.</p>
+      <p>The <dfn class=export  data-dfn-for="extension commands" id="add-mock-microphone">add mock microphone</dfn> <a>extension command</a> adds a new mock microphone or updates an existing one.</p>
       <p>The <a>remote end steps</a> are:
         <ol>
           <li>
@@ -448,7 +448,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>DELETE
          <td>/session/{session id}/capture-devices/{deviceId}
       </table>
-      <p>The <dfn id="delete-mock-capture-device">delete mock capture device</dfn>
+      <p>The <dfn class=export  data-dfn-for="extension commands" id="delete-mock-capture-device">delete mock capture device</dfn>
         <a>extension command</a> deletes a new mock capture device.</p> 
       <p>The <a>remote end steps</a> are:
         <ol>
@@ -504,7 +504,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>POST
          <td>/session/{session id}/capture-devices/default-microphone
       </table>
-      <p>The <dfn id="set-default-mock-microphne-device">default mock microphone device</dfn>
+      <p>The <dfn class=export data-dfn-for="extension commands" id="set-default-mock-microphne-device">set default mock microphone device</dfn>
         <a>extension command</a> sets the default mock microphone device.</p> 
       <p>The <a>remote end steps</a> are:
         <ol>
@@ -555,7 +555,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>DELETE
          <td>/session/{session id}/capture-devices
       </table>
-      <p>The <dfn id="reset-mock-capture-devices">reset mock capture devices</dfn>
+      <p>The <dfn class=export  data-dfn-for="extension commands" id="reset-mock-capture-devices">reset mock capture devices</dfn>
         <a>extension command</a> resets the list of mock capture devices to the default list of mock capture devices.</p> 
       <p>The <a>remote end steps</a> are:
         <ol>
@@ -593,7 +593,7 @@ dictionary MockCapturePromptResultConfiguration {
          <td>GET
          <td>/session/{session id}/capture-devices
       </table>
-      <p>The <dfn id="get-mock-capture-devices">get mock capture devices</dfn>
+      <p>The <dfn class=export data-dfn-for="extension commands" id="get-mock-capture-devices">get mock capture devices</dfn>
         <a>extension command</a> gets the list of mock capture devices.</p> 
       <p>The <a>remote end steps</a> are:
         <ol>
