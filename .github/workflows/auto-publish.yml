@@ -2,6 +2,7 @@ name: Validate and Auto Publish
 
 on:
   push:
+    paths: index.html
     branches:
       - main
   pull_request: {}
@@ -9,8 +10,8 @@ on:
 jobs:
   validate-and-publish:
     name: Validate and Publish
-    runs-on: ubuntu-20.04 # only linux supported at present
+    runs-on: ubuntu-latest # only linux supported at present
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: w3c/spec-prod@v2 # use the action
 
